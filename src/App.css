@@ -1,0 +1,30 @@
+body {
+    margin:0;
+    padding:0;
+    background-color: #f3f3f3;
+}
+
+.faj {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.loaderAnim {
+    animation: 0.1s spin 3 linear;
+}
+
+@keyframes shake {
+  from { transform: rotate(0deg); }
+  25% { transform: rotate(1.5deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(-1.5deg); }
+  to { transform: rotate(0deg); }
+}
+.btnAnim {
+    animation: 0.1s shake 4 linear;
+}
