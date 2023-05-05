@@ -2,6 +2,7 @@ body {
     margin:0;
     padding:0;
     background-color: #f3f3f3;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .faj {
@@ -15,7 +16,7 @@ body {
   to { transform: rotate(360deg); }
 }
 .loaderAnim {
-    animation: 0.1s spin 3 linear;
+    animation: 0.3s spin 1 linear;
 }
 
 @keyframes shake {
