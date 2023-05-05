@@ -4,11 +4,16 @@ import { FaCheckCircle } from '@react-icons/all-files/fa/FaCheckCircle';
 import { FaTrash } from '@react-icons/all-files/fa/FaTrash';
 import { HiPlus } from '@react-icons/all-files/hi/HiPlus';
 import Styles from '../styles/ToDoListStyles';
+import Snackbar from '../components/Snackbar';
 
 const ToDoListContainer = () => {
   const [hover, setHover] = useState(false);
   const [focus, setFocus] = useState(false);
   const [task, setTask] = useState('');
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackText, setSnackText] = useState('');
+  const [timeOver, setTimerOver] = useState(false);
+
   const [list, setList] = useState(() => {
     const savedPlans = JSON.parse(window.localStorage.getItem('plans') || '[]');
     if (savedPlans.length > 0) return savedPlans;
@@ -31,8 +36,11 @@ const ToDoListContainer = () => {
   }, [list]);
 
   const deleteTask = (id) => {
+    setTimerOver(false);
     const newPlans = list.filter((ele) => ele.key !== id);
     setList(newPlans);
+    setShowSnackbar(true);
+    setSnackText('Undo');
   };
   const doneTask = (id) => {
     setList(
@@ -62,7 +70,10 @@ const ToDoListContainer = () => {
           onClick={
             !task
               ? () => {
+                  setTimerOver(false);
                   alert('Enter a plan!');
+                  setShowSnackbar(true);
+                  setSnackText('Enter a plan!');
                 }
               : () => {
                   const key = Math.random() * 1000;
@@ -82,20 +93,7 @@ const ToDoListContainer = () => {
       <div style={{ overflow: 'auto', height: '70vh' }}>
         {list.map((obj) => (
           <div className="faj" key={obj.key}>
-            <div
-              style={
-                obj.isDone
-                  ? {
-                      ...Styles.taskCard,
-                      textDecoration: 'line-through',
-                      textDecorationColor: '#00000066',
-                      opacity: 0.5,
-                    }
-                  : Styles.taskCard
-              }
-            >
-              {obj.value}
-            </div>
+            <div className={obj.isDone ? 'card2' : 'card1'}>{obj.value}</div>
             <FaCheckCircle
               // className={obj.isDone ? 'loaderAnim' : null}
               style={{ marginLeft: 10, transition: '0.5s', cursor: 'pointer' }}
@@ -112,6 +110,12 @@ const ToDoListContainer = () => {
           </div>
         ))}
       </div>
+      <Snackbar
+        show={showSnackbar}
+        snackText={snackText}
+        timeOver={timeOver}
+        setTimerOver={setTimerOver}
+      />
     </div>
   );
 };

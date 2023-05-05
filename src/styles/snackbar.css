@@ -1,0 +1,22 @@
+@keyframes fade {
+  from { opacity: 1; }
+  60% { opacity: 1; }
+  80% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.snackbar {
+  background-color: #dba3a3;
+  width: 100%;
+  height: 50px;
+  color: white;
+  font-weight: 500;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  animation: 4s fade 1 ease-in;
+  box-shadow: #dba3a3 0px 48px 6px 48px;
+}
