@@ -11,14 +11,20 @@ const ToDoListContainer = () => {
   const [focus, setFocus] = useState(false);
   const [task, setTask] = useState('');
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [snackText, setSnackText] = useState('');
-  const [timeOver, setTimerOver] = useState(false);
 
   const [list, setList] = useState(() => {
     const savedPlans = JSON.parse(window.localStorage.getItem('plans') || '[]');
     if (savedPlans.length > 0) return savedPlans;
     else return [];
   });
+
+  useEffect(() => {
+    if (showSnackbar) {
+      setTimeout(() => {
+        setShowSnackbar(false);
+      }, 3000);
+    }
+  }, [showSnackbar]);
 
   useEffect(() => {
     const plans = JSON.parse(window.localStorage.getItem('plans') || '[]');
@@ -35,12 +41,11 @@ const ToDoListContainer = () => {
     }
   }, [list]);
 
-  const deleteTask = (id) => {
-    setTimerOver(false);
-    const newPlans = list.filter((ele) => ele.key !== id);
+  const deleteTask = (obj) => {
+    const newPlans = list.filter((ele) => ele.key !== obj.key);
     setList(newPlans);
+    window.list = obj;
     setShowSnackbar(true);
-    setSnackText('Undo');
   };
   const doneTask = (id) => {
     setList(
@@ -70,10 +75,7 @@ const ToDoListContainer = () => {
           onClick={
             !task
               ? () => {
-                  setTimerOver(false);
                   alert('Enter a plan!');
-                  setShowSnackbar(true);
-                  setSnackText('Enter a plan!');
                 }
               : () => {
                   const key = Math.random() * 1000;
@@ -103,7 +105,7 @@ const ToDoListContainer = () => {
             />
             <FaTrash
               style={{ marginLeft: 10, cursor: 'pointer' }}
-              onClick={() => deleteTask(obj.key)}
+              onClick={() => deleteTask(obj)}
               size={23}
               color="#d68d8d"
             />
@@ -111,10 +113,10 @@ const ToDoListContainer = () => {
         ))}
       </div>
       <Snackbar
-        show={showSnackbar}
-        snackText={snackText}
-        timeOver={timeOver}
-        setTimerOver={setTimerOver}
+        showSnackbar={showSnackbar}
+        setShowSnackbar={setShowSnackbar}
+        list={list}
+        setList={setList}
       />
     </div>
   );
